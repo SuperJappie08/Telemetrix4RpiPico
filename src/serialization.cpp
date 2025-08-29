@@ -5,9 +5,21 @@ std::vector<uint8_t> encode_u16(const uint16_t &value) {
   return {(uint8_t)(value >> 8), (uint8_t)(value & 0xFF)};
 }
 
+void encode_u16(const uint16_t &value, std::span<uint8_t, 2> out) {
+  out[0] = (uint8_t)(value >> 8);
+  out[1] = (uint8_t)(value & 0xFF);
+}
+
 std::vector<uint8_t> encode_u32(const uint32_t &value) {
   return {(uint8_t)(value >> 24), (uint8_t)(value >> 16), (uint8_t)(value >> 8),
           (uint8_t)(value & 0xFF)};
+}
+
+void encode_u32(const uint32_t &value, std::span<uint8_t, 4> out) {
+  out[0] = (uint8_t)(value >> 24);
+  out[1] = (uint8_t)(value >> 16);
+  out[2] = (uint8_t)(value >> 8);
+  out[3] = (uint8_t)(value & 0xFF);
 }
 
 std::vector<uint8_t> encode_u64(const uint64_t &value) {
@@ -17,9 +29,25 @@ std::vector<uint8_t> encode_u64(const uint64_t &value) {
           (uint8_t)(value >> 8),  (uint8_t)(value & 0xFF)};
 }
 
+void encode_u64(const uint64_t &value, std::span<uint8_t, 8> out) {
+  out[0] = (uint8_t)(value >> 56);
+  out[1] = (uint8_t)(value >> 48);
+  out[2] = (uint8_t)(value >> 40);
+  out[3] = (uint8_t)(value >> 32);
+  out[4] = (uint8_t)(value >> 24);
+  out[5] = (uint8_t)(value >> 16);
+  out[6] = (uint8_t)(value >> 8);
+  out[7] = (uint8_t)(value & 0xFF);
+}
+
 std::vector<uint8_t> encode_i16(const int16_t &value) {
   auto converted = *reinterpret_cast<const uint16_t *>(&value);
   return encode_u16(converted);
+}
+
+void encode_i16(const int16_t &value, std::span<uint8_t, 2> out) {
+  auto converted = *reinterpret_cast<const uint16_t *>(&value);
+  return encode_u16(converted, out);
 }
 
 std::vector<uint8_t> encode_i32(const int32_t &value) {
@@ -27,9 +55,19 @@ std::vector<uint8_t> encode_i32(const int32_t &value) {
   return encode_u32(converted);
 }
 
+void encode_i32(const int32_t &value, std::span<uint8_t, 4> out) {
+  auto converted = *reinterpret_cast<const uint32_t *>(&value);
+  return encode_u32(converted, out);
+}
+
 std::vector<uint8_t> encode_i64(const int64_t &value) {
   auto converted = *reinterpret_cast<const uint64_t *>(&value);
   return encode_u64(converted);
+}
+
+void encode_i64(const int64_t &value, std::span<uint8_t, 8> out) {
+  auto converted = *reinterpret_cast<const uint64_t *>(&value);
+  return encode_u64(converted, out);
 }
 
 // std::vector<uint8_t> encode_float(const float & value) {

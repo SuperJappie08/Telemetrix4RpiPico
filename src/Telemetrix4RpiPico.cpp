@@ -27,6 +27,9 @@
  *https://github.com/raspberrypi/pico-examples/tree/master/gpio/dht_sensor
  *
  *************************************************************************/
+#include <functional>
+
+#include "clock_sync.hpp"
 #include "module/Hiwonder_Servo.hpp"
 #include "module/PCA9685_Module.hpp"
 #include "module/tmx_ssd1306_Module.hpp"
@@ -176,7 +179,8 @@ constexpr auto command_table = array_of<command_descriptor>(
     &set_neo_pixel, &clear_all_neo_pixels, &fill_neo_pixels, &init_spi,
     &write_blocking_spi, &read_blocking_spi, &set_format_spi, &spi_cs_control,
     &set_scan_delay, &encoder_new, &sensor_new, &ping, &module_new,
-    &module_data, &get_id, &set_id, &feature_detect, &reset_to_bootloader);
+    &module_data, &get_id, &set_id, &feature_detect, &reset_to_bootloader,
+    &clock_enable, &clock_now);
 
 /***************************************************************************
  *                   DEBUGGING FUNCTIONS
@@ -1800,6 +1804,9 @@ int main() {
     if (!stop_reports) {
       if (time_us_32() - last_scan >= (scan_delay)) {
         last_scan += scan_delay;
+        if (clock_enabled) {
+          clock_now();
+        }
         scan_digital_inputs();
         scan_analog_inputs();
         scan_sonars();

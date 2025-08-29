@@ -13,9 +13,17 @@ std::vector<uint8_t> encode_u16(const uint16_t &value);
 std::vector<uint8_t> encode_u32(const uint32_t &value);
 std::vector<uint8_t> encode_u64(const uint64_t &value);
 
+void encode_u16(const uint16_t &value, std::span<uint8_t, 2> out);
+void encode_u32(const uint32_t &value, std::span<uint8_t, 4> out);
+void encode_u64(const uint64_t &value, std::span<uint8_t, 8> out);
+
 std::vector<uint8_t> encode_i16(const int16_t &value);
 std::vector<uint8_t> encode_i32(const int32_t &value);
 std::vector<uint8_t> encode_i64(const int64_t &value);
+
+void encode_i16(const int16_t &value, std::span<uint8_t, 2> out);
+void encode_i32(const int32_t &value, std::span<uint8_t, 4> out);
+void encode_i64(const int64_t &value, std::span<uint8_t, 8> out);
 
 // std::vector<uint8_t> encode_float(const float &value);
 
